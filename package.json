@@ -12,8 +12,10 @@
     "@heroicons/react": "^2.0.18",
     "lottie-web": "^5.12.2",
     "next": "13.5.4",
-    "react": "^18",
+    "next-sanity": "^5.5.5",
+    "react": "^18.2.0",
     "react-dom": "^18",
+    "react-hook-form": "^7.47.0",
     "react-icons": "^4.11.0",
     "react-simple-typewriter": "^5.0.1"
   },

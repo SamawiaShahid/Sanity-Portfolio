@@ -1,7 +1,13 @@
-"use client"
-import lottie from "lottie-web";
-import React,{useEffect,useRef} from "react";
+"use client";
+import React, { useEffect, useRef, useState } from "react";
 import Skill from "./Skill";
+import lottie from "lottie-web";
+import { client } from "../../../sanity-project/sanity";
+import { groq } from "next-sanity";
+
+async function getData() {
+  return client.fetch(groq`*[_type == "skill"]`);
+}
 
 function Skills() {
   const skills = [
@@ -78,18 +84,30 @@ function Skills() {
       type: "Python",
     },
   ];
- 
-   const container = useRef(null);
+  const container = useRef(null);
   const animationData = require("../../../public/assets/hello.json");
   useEffect(() => {
-    lottie.loadAnimation({
+    const anim = lottie.loadAnimation({
       container: container.current,
       renderer: "svg",
       loop: true,
       autoplay: true,
       animationData: animationData,
     });
-  }, [animationData]);
+    return () => {
+      anim.destroy();
+    };
+  }, []);
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    getData()
+      .then((data) => {
+        setPosts(data);
+      })
+      .catch((error) => {
+        console.log("error fetching posts", error);
+      });
+  }, []);
   return (
     <div className="">
       <h3 className="tracking-[20px] text-center uppercase text-gray-500 text-2xl">
@@ -97,8 +115,8 @@ function Skills() {
       </h3>
 
       <div className="container mx-auto max-w-6xl flex flex-col-reverse md:flex-row items-center justify-between">
-        <div className="md:w-1/2 grid grid-cols-3 gap-5">
-          {skills?.map((item, index) => (
+        <div className="md:w-1/2 grid lg:grid-cols-3 grid-cols-2 gap-5">
+          {posts?.map((item, index) => (
             <Skill key={index} item={item} />
           ))}
         </div>

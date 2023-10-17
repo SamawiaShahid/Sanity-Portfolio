@@ -6,20 +6,28 @@ import { useTypewriter, Cursor } from "react-simple-typewriter";
 function Body() {
   const animationData = require("../../../public/assets/projects.json");
   const [text, count] = useTypewriter({
-    words: ["Hi, My name is Samavia", "Learn with me", "I Love to code More"],
+    words: [
+      "Hi, My name is Samavia",
+      "A Frontend Developer",
+      "I Love to code More",
+    ],
     loop: true,
     delaySpeed: 2000,
   });
   const container = useRef(null);
   useEffect(() => {
-    lottie.loadAnimation({
+    const anim = lottie.loadAnimation({
       container: container.current,
       renderer: "svg",
       loop: true,
       autoplay: true,
       animationData: animationData,
     });
-  }, [animationData]);
+    return () => {
+      anim.destroy();
+    };
+  }, []);
+
   return (
     <section className="py-8">
       <div className="container px-4 mx-auto">
@@ -52,7 +60,7 @@ function Body() {
           </div>
 
           <div className="md:w-1/2 z-auto pt-2 md:mt-0">
-            <div className="container"ref={container}></div>
+            <div className="container" ref={container}></div>
           </div>
         </div>
       </div>
